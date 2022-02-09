@@ -10,6 +10,14 @@ VIEWS = (
 
 
 # Create your models here.
+
+class House(models.Model):
+  name = models.CharField(max_length=50)
+  color = models.CharField(max_length=20)
+
+  def get_absolute_url(self):
+    return reverse('house_detail', kwargs={'house_id': self.id})
+
 class Finch(models.Model):
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)

@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Finch
+from .models import Finch, House
 from .forms import WatchingForm
 
 # Create your views here.
@@ -37,6 +37,16 @@ def add_viewing(request, finch_id):
       new_viewing.save()
     return redirect('detail', finch_id=finch_id)
 
+def houses_index(request):
+    houses = House.objects.all()
+    return render(request, 'houses/index.html', { 'houses': houses })
+
+def house_detail(request, house_id):
+    house = House.objects.get(id=house_id)
+    return render(request, 'houses/detail.html', { 
+      'house': house,
+    })
+
 #class based view
 class FinchCreate(CreateView):
   model = Finch
@@ -50,3 +60,15 @@ class FinchDelete(DeleteView):
   model = Finch
   success_url = '/finches/'
 
+
+class HouseCreate(CreateView):
+  model = House
+  fields = '__all__'
+
+class HouseUpdate(UpdateView):
+  model = House
+  fields = ['Name', 'Color']
+
+class HouseDelete(DeleteView):
+  model = House
+  success_url = '/houses/'
