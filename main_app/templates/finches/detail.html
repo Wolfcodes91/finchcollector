@@ -24,6 +24,12 @@
     {{ watching_form.as_p }}
     <input type="submit" class="btn" value="Add Viewing">
    </form>
+   <br>
+   {% if finch.viewed_for_today %}
+      <div class="card-panel teal-text center-align">{{finch.name}} has been viewed today</div>
+    {% else %}
+      <div class="card-panel red-text center-align">{{finch.name}} might be lonely</div>
+    {% endif %}
     <table class="striped">
       <thead>
         <tr><th>Date</th><th>Viewing</th></tr>

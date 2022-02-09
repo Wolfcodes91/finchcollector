@@ -26,6 +26,9 @@ class Finch(models.Model):
     def get_absolute_url(self):
         return reverse('detail', kwargs={'finch_id': self.id})
 
+    def viewed_for_today(self):
+        return self.watching_set.filter(date=date.today()).count() >= len(VIEWS)
+
 class Watching(models.Model):
     date = models.DateField('viewing date')
     view = models.CharField(
