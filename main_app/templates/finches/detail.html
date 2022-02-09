@@ -69,31 +69,29 @@
     {% endif %}
   </div>
   <!-- Available houses will come after this line -->
-</div>
-
-<div class="col s6">
-  <h3>Available Houses</h3>
-  {% if houses.count %}
-    {% for house in houses.all %}
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">
-            A <span style="color: {{ house.color }}">{{ house.color }}</span> {{ house.name }}
-          </span>
+  <div class="col s6">
+    <h3>Available Houses</h3>
+    {% if houses.count %}
+      {% for house in houses.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              A <span style="color: {{ house.color }}">{{ house.color }}</span> {{ house.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_house' finch.id house.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
         </div>
-        <div class="card-action">
-          <form action="{% url 'assoc_house' finch.id house.id %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn">Add</button>
-          </form>
-        </div>
-      </div>
-    {% endfor %}
-  {% else %}
-    <h5>{{finch.name}} Already Has All Houses Available</h5>
-  {% endif %}
+      {% endfor %}
+    {% else %}
+      <h5>{{finch.name}} Already Has All Houses Available</h5>
+    {% endif %}
+  </div>
 </div>
-
 
 <script>
   const dateEl = document.getElementById('id_date');
