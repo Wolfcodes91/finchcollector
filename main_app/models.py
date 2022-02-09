@@ -15,18 +15,24 @@ class House(models.Model):
   name = models.CharField(max_length=50)
   color = models.CharField(max_length=20)
 
+  def __str__(self):
+        return f'{self.name}, ({self.id})'
+
   def get_absolute_url(self):
     return reverse('house_detail', kwargs={'house_id': self.id})
+
 
 class Finch(models.Model):
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     description = models.TextField(max_length=250)
     age = models.IntegerField()
+    houses = models.ManyToManyField(House)
 
     class Meta: 
         verbose_name = 'finch'
         verbose_name_plural = 'finches'
+
 
     def __str__(self):
         return f'{self.name}, ({self.id})'

@@ -20,10 +20,13 @@ def finches_index(request):
 def finches_detail(request, finch_id):
     finch = Finch.objects.get(id=finch_id)
     #instantiate FeedingForm to be rendered in the template
+    id_list = finch.houses.all().values_list('id')
+    houses_finch_doesnt_have = House.objects.exclude(id__in=id_list)
     watching_form = WatchingForm()
     return render(request, 'finches/detail.html', { 
       'finch': finch,
       'watching_form': watching_form,
+      'houses': houses_finch_doesnt_have,
     })
 
 def add_viewing(request, finch_id):
@@ -47,10 +50,11 @@ def house_detail(request, house_id):
       'house': house,
     })
 
+
 #class based view
 class FinchCreate(CreateView):
   model = Finch
-  fields = '__all__'
+  fields = ['name', 'type', 'description', 'age']
 
 class FinchUpdate(UpdateView):
   model = Finch
@@ -72,3 +76,13 @@ class HouseUpdate(UpdateView):
 class HouseDelete(DeleteView):
   model = House
   success_url = '/houses/'
+
+def assoc_house(request, finch_id, house_id):
+  # Note that you can pass a toy's id instead of the whole toy object
+  Finch.objects.get(id=finch_id).houses.add(house_id)
+  return redirect('detail', finch_id=finch_id)
+
+def unassoc_house(request, finch_id, house_id):
+  finch = Finch.objects.get(id=finch_id)
+  finch.houses.remove(house_id)
+  return redirect('detail', finch_id=finch_id)
